@@ -58,11 +58,17 @@ models:
                   severity: warn
 
     - name: customers_with_late_fees
+      tests:
+        - dbt_utils.equal_rowcount:
+            compare_model: ref('solution')
       columns:
         - name: member_name
-          tests:
+          data_tests:
             - one_row_per_customer
             - no_digits_in_column:
                 column_name: member_name
                 config:
                   severity: warn
+              
+seeds:
+  - name: solution
