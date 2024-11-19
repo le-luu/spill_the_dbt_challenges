@@ -5,9 +5,42 @@ sources:
       schema: main
       tables:
         - name: books_factual
-          columns:
-            - name: book_id
-              data_tests:
-                - unique
-                - not_null
         - name: books_fictional
+        - name: loans
+        - name: members
+
+models:
+    - name: stg_books
+      columns:
+        - name: book_id
+          data_tests:
+            - unique
+            - not_null
+
+    - name: stg_loans
+      columns:
+        - name: book_id
+          data_tests:
+            - not_null
+            - relationships:
+                to: ref('stg_books')
+                field: book_id
+        - name: loan_id
+          data_tests:
+            - not_null
+        - name: member_id
+          data_tests:
+            - not_null
+            - relationships:
+                to: ref('stg_members')
+                field: member_id
+
+    - name: stg_members
+      columns:
+        - name: member_id
+          data_tests:
+            - not_null
+        - name: membership_tier
+          data_tests:
+            - accepted_values:
+                values: ['Bronze','Silver','Gold']
