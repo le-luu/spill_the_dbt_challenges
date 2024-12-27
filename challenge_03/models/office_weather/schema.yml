@@ -1,0 +1,29 @@
+version: 2
+
+seeds:
+  - name: office_locations
+    columns:
+      - name: long
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: -180 # (Optional)
+              max_value: 180 # (Optional)
+              row_condition: "long is not null"
+      - name: lat
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: -90 # (Optional)
+              max_value: 90 # (Optional)
+              row_condition: "lat is not null"
+
+models:
+  - name: extract_weather_data
+    config:
+      alias: latest_weather_readings
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - time
+            - office
+            - latitude
+            - longitude

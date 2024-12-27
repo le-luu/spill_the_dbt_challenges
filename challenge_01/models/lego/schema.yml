@@ -6,3 +6,10 @@ models:
       - name: theme_name # replace with actual column name
         data_tests:
           - not_null
+      - name: unique_part
+        data_tests:
+          - accepted_values:
+              values: ["Not Unique", "Unique"]
+      - name: parts
+        data_tests:
+          - positive_value
